@@ -29,12 +29,25 @@
 //	string50 map : 0x00789DA8;
 //}
 
+state("BGE","unknown")
+{
+    // Default state
+}
+
 state("BGE","CD_Polish")
 {
 	float timeFromNewGame : 0x00784A48, 0x0;
 	float time : 0x007912A0; // timeSinceBoot
 	string50 map : 0x00790FE8;
     int isCutscenePlayingInBossRoom : 0x007851E0, 0x0;
+}
+
+state("BGE","GOG")
+{
+	float timeFromNewGame : 0x0077D808, 0x0;
+	float time : 0x0078A05C; // timeSinceBoot
+	string50 map : 0x00789DA8;
+    int isCutscenePlayingInBossRoom : 0x0077DFA0, 0x0;
 }
 
 startup
@@ -112,10 +125,8 @@ startup
 		};
 	});
     
-	//vars.startedNewGameTime = 0f; // Stores current total time spent in the game to use as an offset
     vars.startOffset = 0f; // Depends how the player restarts the game
     vars.totalLoadTime = 0f; // How much loading we went through
-    //vars.backtracktime = 0f; // How much backtracking from deaths
     vars.lastLoadStartTimestamp = null; // Timestamp when last loading started
 	vars.mammago = 0; // Trick variable for Mammago Garage split
     vars.finalBossCutscenesLeft = 0; // Counts the numbers of cutscenes left before the boss is beaten
@@ -134,7 +145,6 @@ startup
         timer.Run.Offset = TimeSpan.FromSeconds(vars.startOffset);
         
         vars.totalLoadTime = 0f;
-        //vars.backtracktime = 0f;
         vars.lastLoadStartTimestamp = null;
         vars.mammago = 1;
         vars.finalBossCutscenesLeft = 3;
@@ -157,14 +167,15 @@ init
 		//			   break;
 		//case 9768960 : version = "Steam_NoPatch";
 		//			   break;
+        case 9760768 : version = "GOG";
+                       break;
+        //case 10006528: version = "Steam";
+        //               break;
 		case 9850880 : version = "CD_Polish";
 					   break;
 		default : version = "unknown";
 				  break;
 	}
-	
-	//if(version == "unknown")
-	//	throw new Exception("Non-supported version of BGE.");
 }
 
 update
