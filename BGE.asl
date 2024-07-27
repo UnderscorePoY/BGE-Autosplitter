@@ -39,14 +39,16 @@ state("BGE","CD_Polish")
 	float timeFromNewGame : 0x00784A48, 0x0;
 	float time : 0x007912A0; // timeSinceBoot
 	string50 map : 0x00790FE8;
+    int isLoading : 0x00790F4C;
     int isCutscenePlayingInBossRoom : 0x007851E0, 0x0;
 }
 
 state("BGE","GOG")
 {
 	float timeFromNewGame : 0x0077D808, 0x0;
-	float time : 0x0078A05C; // timeSinceBoot
+	float time : 0x0078A05C; // timeSinceBoot, -0x7244 w/ Polish, all others are -0x7240
 	string50 map : 0x00789DA8;
+    int isLoading : 0x00789D0C;
     int isCutscenePlayingInBossRoom : 0x0077DFA0, 0x0;
 }
 
@@ -128,6 +130,7 @@ startup
     vars.startOffset = 0f; // Depends how the player restarts the game
     vars.totalLoadTime = 0f; // How much loading we went through
     vars.lastLoadStartTimestamp = null; // Timestamp when last loading started
+    vars.finalBossHitTimestamp = null; // Timestamp when last boss hit cutscene triggers
 	vars.mammago = 0; // Trick variable for Mammago Garage split
     vars.finalBossCutscenesLeft = 0; // Counts the numbers of cutscenes left before the boss is beaten
     vars.end_delay = 0f; // How long to wait after boss cutscene starts in order to stop the timer
@@ -146,6 +149,7 @@ startup
         
         vars.totalLoadTime = 0f;
         vars.lastLoadStartTimestamp = null;
+        vars.finalBossHitTimestamp = null;
         vars.mammago = 1;
         vars.finalBossCutscenesLeft = 3;
         vars.end_delay = 3.076;
@@ -201,9 +205,9 @@ update
     
     
     // Handling loading time
-    if(current.time == old.time && vars.lastLoadStartTimestamp == null)
+    if(current.isLoading && !old.isLoading)
         vars.lastLoadStartTimestamp = timer.CurrentTime.RealTime.Value;
-    if(current.time > old.time && vars.lastLoadStartTimestamp != null)
+    if(!current.isLoading && old.isLoading && vars.lastLoadStartTimestamp != null)
     {
         vars.totalLoadTime += (timer.CurrentTime.RealTime.Value - vars.lastLoadStartTimestamp).TotalSeconds;
         vars.lastLoadStartTimestamp = null;
@@ -236,7 +240,7 @@ isLoading
 
 gameTime
 {
-    var time = (current.time == old.time) ? vars.lastLoadStartTimestamp.TotalSeconds : timer.CurrentTime.RealTime.Value.TotalSeconds;
+    var time = current.isLoading ? vars.lastLoadStartTimestamp.TotalSeconds : timer.CurrentTime.RealTime.Value.TotalSeconds;
 	return TimeSpan.FromSeconds(time - vars.startOffset - vars.totalLoadTime);
 }
 
@@ -279,9 +283,10 @@ split
                 // Final cutscene ?
                 if(vars.finalBossCutscenesLeft <= 0)
                 {
+                    if(vars.finalBossHitTimestamp == null)
+                        vars.finalBossHitTimestamp = timer.CurrentTime.RealTime.Value;
                     // Waiting for final hit
-                    vars.end_delay -= (current.time - old.time);
-                    if(vars.end_delay <= 0)
+                    if((timer.CurrentTime.RealTime.Value.TotalSeconds - vars.finalBossHitTimestamp.TotalSeconds) >= vars.end_delay)
                     {
                         vars.splits.Remove(_split.Key);
                         return true;
