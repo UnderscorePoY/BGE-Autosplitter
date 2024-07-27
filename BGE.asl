@@ -157,7 +157,7 @@ init
 		//			   break;
 		//case 9768960 : version = "Steam_NoPatch";
 		//			   break;
-		case 9850880 : version = "CD"; // Was tested with Polish patch only
+		case 9850880 : version = "CD_Polish";
 					   break;
 		default : version = "unknown";
 				  break;
