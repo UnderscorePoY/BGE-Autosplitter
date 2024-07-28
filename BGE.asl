@@ -70,7 +70,7 @@ startup
 	settings.Add("nutripils_factory", true, "Nutripils Factory");
 	settings.Add("to_the_moon", true, "To The Moon");
 	settings.Add("moon_hacking", false, "Moon Transmitter Hacking");
-	settings.Add("alpha_spider", true, "Alpha Spider");
+	settings.Add("alpha_spider", true, "Triple Elevator");
 	settings.Add("domz_priest", true, "DomZ Priest");
 	
 	settings.CurrentDefaultParent = "other";
@@ -188,8 +188,8 @@ update
         return false;
 
     // Only stop updating if a run hasn't started. This should fix reset.
-    //if(vars.totalLoadTime == 0)
-    //{
+    if(timer.CurrentTime.RealTime.Value.TotalSeconds < 1f)
+    {
         // User is in introduction/main menus
         switch((string)current.map){
             case "" :
@@ -201,13 +201,13 @@ update
                 return false;
             default : break;
         }
-    //}
+    }
     
     
     // Handling loading time
-    if(current.isLoading && !old.isLoading)
+    if(current.isLoading == 1 && vars.lastLoadStartTimestamp == null)
         vars.lastLoadStartTimestamp = timer.CurrentTime.RealTime.Value;
-    if(!current.isLoading && old.isLoading && vars.lastLoadStartTimestamp != null)
+    if(current.isLoading == 0 && vars.lastLoadStartTimestamp != null)
     {
         vars.totalLoadTime += (timer.CurrentTime.RealTime.Value - vars.lastLoadStartTimestamp).TotalSeconds;
         vars.lastLoadStartTimestamp = null;
@@ -240,7 +240,7 @@ isLoading
 
 gameTime
 {
-    var time = current.isLoading ? vars.lastLoadStartTimestamp.TotalSeconds : timer.CurrentTime.RealTime.Value.TotalSeconds;
+    var time = (current.isLoading == 1) ? vars.lastLoadStartTimestamp.TotalSeconds : timer.CurrentTime.RealTime.Value.TotalSeconds;
 	return TimeSpan.FromSeconds(time - vars.startOffset - vars.totalLoadTime);
 }
 
@@ -272,6 +272,7 @@ split
             
             if(_split.Key == "domz_priest" && ((string)current.map).Contains("09_01_nazh_boss"))
             {
+                //print("[BGE/split] "+vars.finalBossCutscenesLeft);
                 // Cutscene triggered ?
                 if(current.isCutscenePlayingInBossRoom - old.isCutscenePlayingInBossRoom == 1)
                     --vars.finalBossCutscenesLeft;
@@ -286,6 +287,7 @@ split
                     if(vars.finalBossHitTimestamp == null)
                         vars.finalBossHitTimestamp = timer.CurrentTime.RealTime.Value;
                     // Waiting for final hit
+                    //print("[BGE/split] "+(timer.CurrentTime.RealTime.Value.TotalSeconds - vars.finalBossHitTimestamp.TotalSeconds));
                     if((timer.CurrentTime.RealTime.Value.TotalSeconds - vars.finalBossHitTimestamp.TotalSeconds) >= vars.end_delay)
                     {
                         vars.splits.Remove(_split.Key);
