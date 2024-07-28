@@ -54,6 +54,7 @@ startup
 	settings.Add("early_beluga", true, "Early Beluga");
 	settings.Add("pterolimax", false, "Pterolimax (Black Isle Boss)");
 	settings.Add("black_isle", true, "Black Isle (after clearing the area)");
+	settings.Add("volcano_treasure", true, "Volcano's Treasure");
 	settings.Add("spirit_reaper", true, "Spirit Reaper (after exiting the room)");
 	settings.Add("nutripils_factory", true, "Nutripils Factory");
 	settings.Add("to_the_moon", true, "To The Moon");
@@ -76,7 +77,6 @@ startup
 	settings.Add("races_1_2", false, "Races 1 & 2");
 	settings.Add("races_3_4", false, "Races 3 & 4");
 	settings.Add("square_key_quarters", false, "Alpha Section Und. Quarters (Square Key)");
-	settings.Add("volcano_treasure", false, "Volcano's Treasure");
 	settings.Add("vorax_lair", false, "Vorax's Lair");
 	//----------------------------------------------//
 		
@@ -89,6 +89,7 @@ startup
 			{"early_beluga", new KeyValuePair<string, string>("06_12_animaux_garage", "04_00_vaisseau_hyllis_planete")},
 			{"pterolimax", new KeyValuePair<string, string>("05_02_ilot_boss", "05_00_ilot_sas_accueil")},
 			{"black_isle", new KeyValuePair<string, string>("05_00_ilot_sas_accueil", "04_00_vaisseau_hyllis_planete")},
+			{"volcano_treasure", new KeyValuePair<string, string>("11_13_Combat_06", "04_00_vaisseau_hyllis_planete")},
 			{"spirit_reaper", new KeyValuePair<string, string>("01_01_entrepot_ascenseur_central", "01_02_entrepot_salle_fusibles")},
 			{"nutripils_factory", new KeyValuePair<string, string>("01_00_entrepot_sas_entree", "04_00_vaisseau_hyllis_planete")},
 			{"to_the_moon", new KeyValuePair<string, string>("04_00_vaisseau_hyllis_planete", "04_01_vaisseau_hyllis_espace")},
@@ -109,7 +110,6 @@ startup
 			{"races_3_4", new KeyValuePair<string, string>("", "04_00_vaisseau_hyllis_planete")},
 			//{"slaughterhouses_entrance", new KeyValuePair<string, string>("", "04_00_vaisseau_hyllis_planete")},
 			{"square_key_quarters", new KeyValuePair<string, string>("11_10_Combat_03", "04_00_vaisseau_hyllis_planete")},
-			{"volcano_treasure", new KeyValuePair<string, string>("11_13_Combat_06", "04_00_vaisseau_hyllis_planete")},
 			{"vorax_lair", new KeyValuePair<string, string>("11_08_Combat_01", "04_00_vaisseau_hyllis_planete")},
 			
 		};
