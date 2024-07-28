@@ -187,7 +187,7 @@ update
     if(version == "unknown")
         return false;
 
-    // Only stop updating if a run hasn't started. This should fix reset.
+    // Don't update on main menu if a run hasn't started.
     if(timer.CurrentTime.RealTime.Value.TotalSeconds < 1f)
     {
         // User is in introduction/main menus
