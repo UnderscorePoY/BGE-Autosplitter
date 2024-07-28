@@ -1,19 +1,7 @@
-
-// TODO : fix slowdown when doing Early Beluga
-
-// time : IGT with slowdowns
-//			* Keeps going when resetting a game
-//			* Undergoes slowdowns even when dying
-//			* Stops during loading screens
 // timeFromNewGame : IGT from New Game
 //			* Equals 0 when hitting New Game
 //          * Stops when dying
 //			* Steps back after dying
-//			# only used to start the timer
-// map : name of the current map
-//			* main menu name is "_main_logo"
-// isCutscenePlayingInBossRoom : a flag that indicates if a cutscene is playing in boss room
-//          * 1 if a cutscene is playing
 
 //state("BGE","UPlay")
 //{
@@ -37,7 +25,7 @@ state("BGE","unknown")
 state("BGE","CD_Polish")
 {
 	float timeFromNewGame : 0x00784A48, 0x0;
-	float time : 0x007912A0; // timeSinceBoot
+	//float timeSinceBoot : 0x007912A0; // timeSinceBoot
 	string50 map : 0x00790FE8;
     int isLoading : 0x00790F4C;
     int isCutscenePlayingInBossRoom : 0x007851E0, 0x0;
@@ -46,7 +34,7 @@ state("BGE","CD_Polish")
 state("BGE","GOG")
 {
 	float timeFromNewGame : 0x0077D808, 0x0;
-	float time : 0x0078A05C; // timeSinceBoot, -0x7244 w/ Polish, all others are -0x7240
+	//float timeSinceBoot : 0x0078A05C; // timeSinceBoot, -0x7244 w/ Polish, all others are -0x7240
 	string50 map : 0x00789DA8;
     int isLoading : 0x00789D0C;
     int isCutscenePlayingInBossRoom : 0x0077DFA0, 0x0;
